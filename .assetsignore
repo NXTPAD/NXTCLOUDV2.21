@@ -1,0 +1,10 @@
+# Files that must not be served publicly
+src
+functions
+wrangler.toml
+README.md
+.assetsignore
+.git
+.gitignore
+node_modules
+.wrangler

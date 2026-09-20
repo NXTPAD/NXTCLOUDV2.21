@@ -1,0 +1,14 @@
+name = "nxtcloudv2"
+main = "src/index.js"
+compatibility_date = "2026-09-19"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
+# Powers NXT AI (/api/chat). Remove this block to run without AI;
+# the chat page then shows that NXT AI is offline.
+[ai]
+binding = "AI"
