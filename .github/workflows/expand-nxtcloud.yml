@@ -1,0 +1,40 @@
+name: Expand NXT CLOUD project
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    if: ${{ hashFiles('NXTCLOUDV2.2-main-restyled.zip') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract project
+        run: |
+          set -e
+          rm -rf /tmp/nxtcloud
+          mkdir -p /tmp/nxtcloud
+          unzip -q NXTCLOUDV2.2-main-restyled.zip -d /tmp/nxtcloud
+          unzip -q /tmp/nxtcloud/NXTCLOUDV2.2-main/nxtcloudv2-redesign.zip -d /tmp/nxtcloud
+          cp -a /tmp/nxtcloud/nxtcloudv2-redesign/. .
+
+      - name: Replace repository root
+        run: |
+          rm -f NXTCLOUDV2.2-main-restyled.zip
+          rm -f fix-token-logos.py
+          rm -rf .github/workflows/expand-nxtcloud.yml
+          git add -A
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Replace repository with NXT CLOUD project"
+            git push
+          fi
